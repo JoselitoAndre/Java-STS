@@ -9,10 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.systemdigital.domain.Categoria;
 import br.com.systemdigital.domain.Cidade;
+import br.com.systemdigital.domain.Cliente;
+import br.com.systemdigital.domain.Endereco;
 import br.com.systemdigital.domain.Estado;
 import br.com.systemdigital.domain.Produto;
+import br.com.systemdigital.domain.enums.TipoCliente;
 import br.com.systemdigital.repositories.CategoriaRepository;
 import br.com.systemdigital.repositories.CidadeRepository;
+import br.com.systemdigital.repositories.ClienteRepository;
+
+import br.com.systemdigital.repositories.EnderecoRepository;
 import br.com.systemdigital.repositories.EstadoRepository;
 import br.com.systemdigital.repositories.ProdutoRepository;
 
@@ -30,6 +36,12 @@ public class TreinandoStsApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TreinandoStsApplication.class, args);
@@ -73,6 +85,16 @@ public class TreinandoStsApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 		
+		Cliente cli1 = new Cliente(null, "Marina Silva", "Marina@gmai;.com", "36371234", TipoCliente.PESSOAFISICA);
 		
+		cli1.getTelefones().addAll(Arrays.asList("27361234", "93835432"));
+		
+		Endereco e1 = new Endereco(null, "Rua das Flores", "300", "Apto 303", "Jardim", "3822084", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 808", "Centro", "38771124", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 	}
 }
