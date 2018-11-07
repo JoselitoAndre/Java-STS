@@ -13,6 +13,7 @@ import br.com.systemdigital.domain.Cidade;
 import br.com.systemdigital.domain.Cliente;
 import br.com.systemdigital.domain.Endereco;
 import br.com.systemdigital.domain.Estado;
+import br.com.systemdigital.domain.ItemPedido;
 import br.com.systemdigital.domain.Pagamento;
 import br.com.systemdigital.domain.PagamentoComBoleto;
 import br.com.systemdigital.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import br.com.systemdigital.repositories.CidadeRepository;
 import br.com.systemdigital.repositories.ClienteRepository;
 import br.com.systemdigital.repositories.EnderecoRepository;
 import br.com.systemdigital.repositories.EstadoRepository;
+import br.com.systemdigital.repositories.ItemPedidoRepository;
 import br.com.systemdigital.repositories.PagamentoRepository;
 import br.com.systemdigital.repositories.PedidoRepository;
 import br.com.systemdigital.repositories.ProdutoRepository;
@@ -56,9 +58,15 @@ public class TreinandoStsApplication implements CommandLineRunner {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 	
+	@Autowired
+	private ItemPedidoRepository ItemPedidoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TreinandoStsApplication.class, args);
 	}
+	
+	
+	
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -128,5 +136,20 @@ public class TreinandoStsApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2)); 
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p1.getItens().addAll(Arrays.asList(ip2));
+		p1.getItens().addAll(Arrays.asList(ip3));
+		
+		ItemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+		
 	}
 }
