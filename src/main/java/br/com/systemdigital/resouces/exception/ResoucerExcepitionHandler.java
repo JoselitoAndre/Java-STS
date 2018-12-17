@@ -17,4 +17,11 @@ public class ResoucerExcepitionHandler {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
+	
+	public ResponseEntity<StandardError> dataIntegrity(ObjectNotFoundException e, HttpServletRequest request){
+		
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 }
